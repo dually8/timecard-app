@@ -37,15 +37,16 @@
         <button class="button icon ion-edit" ng-click="editTimeOut()"></button>
       </label>
 
-      <label class="item item-input">
-        <span class="input-label">Break</span>
-        <p ng-model="myBreak.time">{{myBreak.time}} minutes</p>
-        <div class="range">
+      <div class="list">
+        <div class="item item-divider">
+          Break: {{myBreak.time}} minutes
+        </div>
+        <div class="item range range-positive">
           <i>0</i>
           <input type="range" name="break" min="0" max="60" ng-model="myBreak.time">
           <i>60</i>
         </div>
-      </label>
+      </div>
 
     </ion-content>
     <ion-footer-bar align-title="left" class="bar-positive">
