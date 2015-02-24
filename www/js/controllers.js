@@ -10,6 +10,7 @@ angular.module('starter.controllers', [])
 
     $scope.myTimeIn = new Date().setHours(8,0,0,0);
     $scope.myTimeOut = new Date().setHours(17,0,0,0);
+    $scope.myBreak = 0;
 
     $scope.editTimeIn = function(){
         var options = {
@@ -34,7 +35,31 @@ angular.module('starter.controllers', [])
         });
     };
 
-    $scope.delete = function(item){
+    var timeoutId = null;
+
+    $scope.$watch('myBreak.time', function() {
+
+
+        console.log('Has changed');
+
+        if (timeoutId !== null) {
+            console.log('Ignoring this movement');
+            return;
+        }
+
+        console.log('Not going to ignore this one');
+        timeoutId = $timeout(function () {
+
+            console.log('It changed recently!');
+
+            $timeout.cancel(timeoutId);
+            timeoutId = null;
+
+            // Now load data from server
+        }, 1000);
+    });
+
+            $scope.delete = function(item){
         $scope.items.splice($scope.items.indexOf(item), 1);
     };
 
@@ -52,12 +77,18 @@ angular.module('starter.controllers', [])
     $scope.addTime = function() {
         $scope.myTimeIn = null;
         $scope.myTimeOut = null;
+        $scope.myBreak = {'time' : '0'};
         $scope.modal.show();
     };
     $scope.closeModal = function(val) {
         if(val == 1){
             //add time
             var timeworked = ($scope.myTimeOut.valueOf() - $scope.myTimeIn.valueOf()) / 3600000.0;
+            if($scope.myBreak.time > 0){
+                timeworked = timeworked - ($scope.myBreak.time.valueOf() / 60.0);
+            }
+            //alert("Timeworked:" + timeworked);
+            //alert("myBreak: " + $scope.myBreak.time);
             $scope.items.push({time: timeworked.toFixed(2)});
         }
         else{
